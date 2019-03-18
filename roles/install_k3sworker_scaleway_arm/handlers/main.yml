@@ -1,0 +1,6 @@
+---
+- name: "Restart k3s agent if config file changed"
+  systemd:
+    name: k3s
+    state: restarted
+    daemon-reload: yes

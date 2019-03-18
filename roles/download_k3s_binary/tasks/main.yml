@@ -1,0 +1,6 @@
+---
+- name: "Download k3s latest release"
+  get_url:
+    url: https://github.com/rancher/k3s/releases/download/v0.1.0/k3s-arm64
+    dest: /usr/local/bin/k3s
+    mode: 0755

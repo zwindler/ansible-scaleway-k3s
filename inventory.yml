@@ -1,0 +1,6 @@
+plugin: scaleway
+regions:
+  - par1
+tags:
+  - k3sworker
+  - k3smaster

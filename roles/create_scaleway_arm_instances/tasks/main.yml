@@ -1,0 +1,45 @@
+---
+- name: Gather Scaleway images facts
+  scaleway_image_facts:
+    region: par1
+- name: Find a suitable Ubuntu arm image
+  set_fact:
+    armimage: "{{item.id}}"
+  when: item.arch == "arm64" and item.name == "Ubuntu Bionic Beaver" and item.root_volume.size == 50000000000
+  loop: "{{ scaleway_image_facts }}"
+#- name: "show image id"
+#  debug:
+#    var=armimage
+- name: Gather Scaleway organizations facts
+  scaleway_organization_facts:
+
+- name: "Add SSH key"
+  scaleway_sshkey:
+    ssh_pub_key: "{{lookup('file', 'admin.pub') }}"
+    state: "present"
+
+- name: "Create masters"
+  scaleway_compute:
+    name: k3smaster{{item}}
+    state: running
+    image: "{{armimage}}"
+    organization: "{{scaleway_organization_facts[0].id}}"
+    region: par1
+    commercial_type: ARM64-2GB
+    wait: true
+    tags: ["k3smaster"]
+    public_ip: dynamic
+  loop: "{{ range(1, 1 + 1)|list }}"
+
+- name: "Create workers"
+  scaleway_compute:
+    name: k3sworker{{item}}
+    state: running
+    image: "{{armimage}}"
+    organization: "{{scaleway_organization_facts[0].id}}"
+    region: par1
+    commercial_type: ARM64-2GB
+    wait: true
+    tags: ["k3sworker"]
+    public_ip: dynamic
+  loop: "{{ range(1, 1 + 1)|list }}"    

@@ -1,0 +1,4 @@
+- hosts: localhost
+  connection: local
+  roles:
+  - {role: create_scaleway_arm_instances}

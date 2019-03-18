@@ -1,0 +1,7 @@
+- hosts: 
+  - k3smaster
+  - k3sworker
+  roles:
+  - {role: download_k3s_binary}
+  - {role: install_k3smaster_scaleway_arm, when: "'k3smaster' in group_names" }
+  - {role: install_k3sworker_scaleway_arm, when: "'k3sworker' in group_names" }

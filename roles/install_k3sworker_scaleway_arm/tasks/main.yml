@@ -1,0 +1,14 @@
+---
+- name: "Add systemd k3s startup script"
+  template:
+    src:  k3s.service.j2
+    dest: /etc/systemd/system/k3s.service
+  notify: "Restart k3s agent if config file changed"
+- name: "Force all notified handlers to run at this point"
+  meta: flush_handlers
+
+- name: "Check if k3s agent is started, start it if not"
+  systemd:
+    name: k3s
+    state: started
+    enabled: yes

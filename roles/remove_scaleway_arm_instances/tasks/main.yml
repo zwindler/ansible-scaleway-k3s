@@ -1,0 +1,18 @@
+---
+- hosts: localhost
+  connection: local
+  tasks:
+  - name: "Gather Scaleway organizations facts"
+    scaleway_organization_facts:
+  - name: "Delete masters"
+    scaleway_compute:
+      name: k3smaster{{item}}
+      state: absent
+      organization: "{{scaleway_organization_facts[0].id}}"
+      region: par1
+      commercial_type: C1
+      wait: true
+      tags: k3s
+      image: d0b50687-7840-4f7f-b615-e2f13dabbcde
+      public_ip: dynamic
+    loop: "{{ range(1, 1 + 1)|list }}"

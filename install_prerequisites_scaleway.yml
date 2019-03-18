@@ -1,0 +1,5 @@
+- hosts: 
+  - k3smaster
+  - k3sworker
+  roles:
+  - {role: install_prerequisites_scaleway}

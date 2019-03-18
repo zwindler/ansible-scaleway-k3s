@@ -1,0 +1,6 @@
+---
+- hosts: k3s
+  gather_facts: no
+  pre_tasks:
+  - name: 'Install Ansible prerequisites on remote hosts'
+    raw: apt-get -y install python sudo
