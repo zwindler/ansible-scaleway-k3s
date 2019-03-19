@@ -110,3 +110,16 @@ Installer k3s
 ```bash
 ansible-playbook -i inventory.yml -u root install_k3s_scaleway.yml
 ```
+
+Configurer kubeconfig (pour kubectl) sur la machine locale
+
+```bash
+ansible-playbook -i inventory.yml -u root configure_kubeconfig.yml
+```
+
+Tester votre nouveau cluster
+
+```bash
+cd
+kubectl --kubeconfig=.kube/config.k3smaster get nodes
+```
